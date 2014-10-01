@@ -15,7 +15,7 @@ public class ProxyServlet extends javax.servlet.http.HttpServlet {
 	/**
 	 * Don't forget to change this constant!
 	 */
-	public static String PROXY_TARGET = "http://www.google.com";
+	public static String PROXY_TARGET = "https://github.com/";
 
 	private static Proxy proxy = new Proxy(PROXY_TARGET);
 

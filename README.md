@@ -33,7 +33,8 @@ With no other options left, I created this proxy and saved our bottocks. And one
 Usage
 -----
 Use it to tunnel traffic from one of your App Engine web applications to another.
-It might also help you when migrating from AppEngine to another platform,
+It might also help you when migrating from AppEngine to another platform.
+It will 100% work on stateless API calls. Replacing whole website might be tricky, unless your website uses only relative links.
 
 TODO
 ----
