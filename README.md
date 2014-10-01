@@ -28,9 +28,14 @@ Story
 Most of our mobile apps use App Engine as a backend service. One of our iOS contractors submitted one the apps to Apple's
 approval, but it was connected to the test server (#facepalm). Unfortunately nobody noticed this tragic error until it was out.
 
-With no other options left I created this proxy and saved our bottocks. And one day, it may save yours.
+With no other options left, I created this proxy and saved our bottocks. And one day, it may save yours.
 
 Usage
 -----
 Use it to tunnel traffic from one of your App Engine web applications to another.
 It might also help you when migrating from AppEngine to another platform,
+
+TODO
+----
+- automated testing
+- test against Cloud Endpoints
