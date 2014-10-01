@@ -9,8 +9,11 @@ import java.util.Enumeration;
 import java.util.logging.Logger;
 
 /**
+ * All HTTP semi-magic happens here.
  *
- *
+ * Proxy receives a request.
+ * Proxy translates request to proxyTarget and copies all HTTP headers from REQUEST_HEADERS_TO_COPY.
+ * Proxy receives the response, copies all HTTP from RESPONSE_HEADERS_TO_COPY and copies response stream to client.
  *
  */
 public class Proxy {
