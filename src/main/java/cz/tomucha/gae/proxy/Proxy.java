@@ -1,12 +1,14 @@
 package cz.tomucha.gae.proxy;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * All HTTP semi-magic happens here.
@@ -52,14 +54,11 @@ public class Proxy {
 			"Transfer-Encoding",
 			"Vary"
 	};
+	
+	private String target;
 
-	private String proxyTarget;
-
-	public Proxy(String proxyTarget) {
-		if (proxyTarget == null) {
-			throw new IllegalArgumentException("Please specify proxy target, eq. http://myhost.example.com");
-		}
-		this.proxyTarget = proxyTarget;
+	public Proxy(String target) {
+		this.target = target;
 	}
 
 	// some configuration
@@ -109,12 +108,32 @@ public class Proxy {
 
 	// private utils
 
-	private String renderRequestString(HttpServletRequest clientRequest) {
-		String requestString = clientRequest.getRequestURI();
-		if (clientRequest.getQueryString() != null) {
-			requestString = requestString + "?" + clientRequest.getQueryString();
+	protected String renderRequestString(HttpServletRequest request) {
+		return rewrite(request, request.getServletPath(), target);
+	}
+
+	private static String rewrite(HttpServletRequest request, String _prefix, String _proxyTo) {
+		String path = request.getRequestURI();
+
+		StringBuilder uri = new StringBuilder(_proxyTo);
+
+		String rest = path.substring(_prefix.length());
+		if(!rest.isEmpty()) {
+			uri.append(rest);
 		}
-		return proxyTarget + requestString;
+
+		String query = request.getQueryString();
+		if (query != null) {
+			// Is there at least one path segment ?
+			String separator = "://";
+			if (uri.indexOf("/", uri.indexOf(separator) + separator.length()) < 0)
+				uri.append("/");
+			uri.append("?").append(query);
+		}
+
+		URI rewrittenURI = URI.create(uri.toString()).normalize();
+		
+		return rewrittenURI.toString();
 	}
 
 	private void doProxy(HttpServletRequest clientRequest, HttpServletResponse proxyResponse, HttpRequest proxyRequest, boolean copyRequestBody) throws IOException {

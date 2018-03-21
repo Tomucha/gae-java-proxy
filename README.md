@@ -15,12 +15,35 @@ Classes
 Install
 -------
 
-- simply copy my classes into your project
-- to integrate proxy with your project see [ProxyServlet](src/main/java/cz/tomucha/gae/proxy/ProxyServlet.java) example
-- configure [web.xml](src/main/webapp/WEB-INF/web.xml)
-- configure [appengine-web.xml](src/main/webapp/WEB-INF/appengine-web.xml)
+Put on your pom.xml:
 
-And you are good to go.
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	
+	<dependency>
+	    <groupId>com.github.rafaeluchoa</groupId>
+	    <artifactId>gae-java-proxy</artifactId>
+	    <version>-SNAPSHOT</version>
+	</dependency>
+	
+Include in your web.xml:
+	
+	<servlet>
+		<servlet-name>app1</servlet-name>
+		<servlet-class>cz.tomucha.gae.proxy.ProxyServlet</servlet-class>
+		<init-param>
+			<param-name>target</param-name>
+			<param-value>http://server2/app1</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>app1</servlet-name>
+		<url-pattern>/app1/*</url-pattern>
+	</servlet-mapping>
 
 Story
 -----

@@ -1,24 +1,27 @@
 package cz.tomucha.gae.proxy;
 
+import java.io.IOException;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Enumeration;
 
 /**
  * Use this example to integrate {@Proxy} with your project.
  */
 public class ProxyServlet extends javax.servlet.http.HttpServlet {
-
-	/**
-	 * Don't forget to change this constant!
-	 */
-	public static String PROXY_TARGET = "https://github.com/";
-
-	private static Proxy proxy = new Proxy(PROXY_TARGET);
-
+	
+	private static final long serialVersionUID = 1L;
+	
+	private Proxy proxy;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);		
+		this.proxy = new Proxy(config.getInitParameter("target"));
+	}
+	
 	protected void doPost(HttpServletRequest clientRequest, HttpServletResponse proxyResponse) throws javax.servlet.ServletException, IOException {
 		proxy.doPost(clientRequest, proxyResponse);
 	}
